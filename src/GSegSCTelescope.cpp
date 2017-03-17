@@ -396,9 +396,11 @@ void GSegSCTelescope::addPrimaryMirror(const char*name,
   mir->SetReflectivity(graph); // graph owned by AMirror (and deleted)
   TGeoCombiTrans* combi = mirror->BuildMirrorCombiTrans(fPrimaryV, kTRUE);
 
-  ABorderSurfaceCondition * condition
-    = new ABorderSurfaceCondition(fManager->GetTopVolume(), mir);
-  condition->SetGaussianRoughness(mirror->GetRoughness()*TMath::DegToRad());
+  //ABorderSurfaceCondition* condition = new ABorderSurfaceCondition(fManager->GetTopVolume(), mir);
+  //condition->SetGaussianRoughness(mirror->GetRoughness()*TMath::DegToRad());
+
+  
+
   fManager->GetTopVolume()->AddNode(mir, 1, combi);
   
 };
@@ -582,9 +584,8 @@ void GSegSCTelescope::addSecondaryMirror(const char*name, SegmentedMirror *mirro
 
   TGeoCombiTrans* combi = mirror->BuildMirrorCombiTrans(fSecondaryV, kFALSE);
 
-  ABorderSurfaceCondition * condition
-    = new ABorderSurfaceCondition(fManager->GetTopVolume(), mir);
-  condition->SetGaussianRoughness(mirror->GetRoughness()*TMath::DegToRad());
+  //ABorderSurfaceCondition* condition = new ABorderSurfaceCondition(fManager->GetTopVolume(), mir);
+  //condition->SetGaussianRoughness(mirror->GetRoughness()*TMath::DegToRad());
 
   fManager->GetTopVolume()->AddNode(mir, 1, combi);
   
@@ -604,10 +605,10 @@ void GSegSCTelescope::addPrimaryBaffle() {
   }
 
   TGeoCone* pBaffle = new TGeoCone("pBaffle", fpBLen*TMath::Cos(TMath::DegToRad()*fpBTilt)/2,
-				   fRpMax+fpBRadOffset, 
-				   fRpMax+fpBRadOffset+1*cm, 
-				   fRpMax+fpBRadOffset+fpBLen*TMath::Tan(TMath::DegToRad()*fpBTilt), 
-				   fRpMax+fpBRadOffset+fpBLen*TMath::Tan(TMath::DegToRad()*fpBTilt)+1*cm);
+           fRpMax+fpBRadOffset, 
+           fRpMax+fpBRadOffset+1*cm, 
+           fRpMax+fpBRadOffset+fpBLen*TMath::Tan(TMath::DegToRad()*fpBTilt), 
+           fRpMax+fpBRadOffset+fpBLen*TMath::Tan(TMath::DegToRad()*fpBTilt)+1*cm);
   TGeoTranslation* pBaffleTrans = new TGeoTranslation("pBaffleTrans", 0., 0., kZp+fP[0]+fpBZOffset+fpBLen*TMath::Cos(TMath::DegToRad()*fpBTilt)/2);
   
   AObscuration* pBaffleObs = new AObscuration("pBaffleObs", pBaffle);  
@@ -631,10 +632,10 @@ void GSegSCTelescope::addSecondaryBaffle() {
   }
 
   TGeoCone* sBaffle = new TGeoCone("sBaffle", fsBLen*TMath::Cos(TMath::DegToRad()*fsBTilt)/2,
-				   fRsMax+fsBRadOffset, 
-				   fRsMax+fsBRadOffset+1*cm, 
-				   fRsMax+fsBRadOffset+fsBLen*TMath::Tan(TMath::DegToRad()*fsBTilt), 
-				   fRsMax+fsBRadOffset+fsBLen*TMath::Tan(TMath::DegToRad()*fsBTilt)+1*cm);
+           fRsMax+fsBRadOffset, 
+           fRsMax+fsBRadOffset+1*cm, 
+           fRsMax+fsBRadOffset+fsBLen*TMath::Tan(TMath::DegToRad()*fsBTilt), 
+           fRsMax+fsBRadOffset+fsBLen*TMath::Tan(TMath::DegToRad()*fsBTilt)+1*cm);
   TGeoTranslation* sBaffleTrans = new TGeoTranslation("sBaffleTrans", 0., 0., kZs+fS[0]-fsBZOffset-fsBLen*TMath::Cos(TMath::DegToRad()*fsBTilt)/2);
   
   AObscuration* sBaffleObs = new AObscuration("sBaffleObs", sBaffle);
@@ -1265,29 +1266,29 @@ void GSegSCTelescope::addMAPMTFocalPlane()  {
         if((TMath::Abs(i) + TMath::Abs(j) >= 11) || (TMath::Abs(i)*TMath::Abs(j) == 21)){
           continue;
         } // if
-	if (fSubCells == 1){
-	  Double_t dy = j*fMAPMTWidth;
-	  Double_t r2 = (i*i + j*j)*fMAPMTWidth*fMAPMTWidth;
-	  Double_t dz = fKappa1*TMath::Power(fF, -1)*r2 + fKappa2*TMath::Power(fF, -3)*r2*r2;
-	  focVol->AddNode(mapmt, n, new TGeoTranslation(dx, dy, 
-							mapmtPositionReltoFocalSurface +
-							+ fMAPMTOffset + dz));
-	  n++;
-	}
-	else{
-	  for (Int_t k = -fSubCells/2; k<fSubCells/2; k++){
-	    for (Int_t l = -fSubCells/2; l<fSubCells/2; l++){
-	      Double_t subdx = dx+(k+1/2)*(fMAPMTWidth/fSubCells);
-	      Double_t dy = j*fMAPMTWidth+(l+1/2)*(fMAPMTWidth/fSubCells);
-	      Double_t r2 = subdx*subdx+dy*dy;
-	      Double_t dz = fKappa1*TMath::Power(fF, -1)*r2 + fKappa2*TMath::Power(fF, -3)*r2*r2;
-	      focVol->AddNode(mapmt, n, new TGeoTranslation(subdx, dy, 
-							    mapmtPositionReltoFocalSurface +
-							    + fMAPMTOffset + dz));
-	      n++;
-	    }
-	  }
-	}
+  if (fSubCells == 1){
+    Double_t dy = j*fMAPMTWidth;
+    Double_t r2 = (i*i + j*j)*fMAPMTWidth*fMAPMTWidth;
+    Double_t dz = fKappa1*TMath::Power(fF, -1)*r2 + fKappa2*TMath::Power(fF, -3)*r2*r2;
+    focVol->AddNode(mapmt, n, new TGeoTranslation(dx, dy, 
+              mapmtPositionReltoFocalSurface +
+              + fMAPMTOffset + dz));
+    n++;
+  }
+  else{
+    for (Int_t k = -fSubCells/2; k<fSubCells/2; k++){
+      for (Int_t l = -fSubCells/2; l<fSubCells/2; l++){
+        Double_t subdx = dx+(k+1/2)*(fMAPMTWidth/fSubCells);
+        Double_t dy = j*fMAPMTWidth+(l+1/2)*(fMAPMTWidth/fSubCells);
+        Double_t r2 = subdx*subdx+dy*dy;
+        Double_t dz = fKappa1*TMath::Power(fF, -1)*r2 + fKappa2*TMath::Power(fF, -3)*r2*r2;
+        focVol->AddNode(mapmt, n, new TGeoTranslation(subdx, dy, 
+                  mapmtPositionReltoFocalSurface +
+                  + fMAPMTOffset + dz));
+        n++;
+      }
+    }
+  }
       } // y
     } // x
   }
@@ -1307,7 +1308,7 @@ void GSegSCTelescope::addMAPMTFocalPlane()  {
                                                              new TGeoRotation("rFocS",
                                                                               0.0,
                                                                               0.0,
-									      0.0)));
+                        0.0)));
   /* 
  fManager->GetTopVolume()->AddNode(focVol,1,new TGeoCombiTrans("cFocS",
                                                                0.0,
@@ -1317,7 +1318,7 @@ void GSegSCTelescope::addMAPMTFocalPlane()  {
                                                                                 0.0,
                                                                                 0.0,
                                                                                 0.0)));
-										*/
+                    */
 };
 /*************************************************************************************/
 
@@ -1336,7 +1337,7 @@ void GSegSCTelescope::testFocalPlane() {
 
 void GSegSCTelescope::injectPhoton(const ROOT::Math::XYZVector &photonLocT,
                                 const ROOT::Math::XYZVector &photonDirT,
-				const double &photWaveLgt) {
+        const double &photWaveLgt) {
   gGeoManager = fManager;
 
   bool debug = false;
@@ -1363,7 +1364,7 @@ void GSegSCTelescope::injectPhoton(const ROOT::Math::XYZVector &photonLocT,
   //*oLog << "             specified location and direction " << endl;
   //for (int i = 0;i<3;i++) {
   //*oLog << i << "  " << fphotonInjectLoc[i] << "  " 
-  //	  << fphotonInjectDir[i] << endl;
+  //    << fphotonInjectDir[i] << endl;
   //}
 
   photonLocT.GetCoordinates(fInitialInjectLoc);
@@ -1410,7 +1411,7 @@ void GSegSCTelescope::injectPhoton(const ROOT::Math::XYZVector &photonLocT,
   double new_t = new_xyzt[3];
   if (debug) {
     *oLog << " from GetLastPoint " << new_x << " " << new_y 
-	  << " " << new_z << " " << new_t << endl;
+    << " " << new_z << " " << new_t << endl;
   }
 
 };
@@ -1424,7 +1425,7 @@ void GSegSCTelescope::movePositionToTopOfTopVol() {
     *oLog << "  -- GSegSCTelescope::movePositionToTopOfTopVol " << endl;
     *oLog << "        position prior to move to top ";
     *oLog << fphotonInjectLoc[0] << "  " << fphotonInjectLoc[1] << "  " 
-	  << fphotonInjectLoc[2] << endl;
+    << fphotonInjectLoc[2] << endl;
   }
 
   Double_t rfx = fphotonInjectLoc[0];
@@ -1580,33 +1581,33 @@ bool GSegSCTelescope::getCameraPhotonLocation(ROOT::Math::XYZVector *photonLoc,
       *oLog << "      ray->GetNpoints(): " << ray->GetNpoints() << endl;
       TPolyLine3D *pol = ray->MakePolyLine3D();
       for (Int_t ii = 0 ;ii < pol->GetN(); ii++ ) {
-	*oLog << ii << "  " << (pol->GetP())[ii] << endl;
+  *oLog << ii << "  " << (pol->GetP())[ii] << endl;
       }
       pol->Print("all");
       *oLog << " fStatusLast " << fStatusLast << "  ";
       if (fStatusLast == 0) {
-	*oLog << "kRun" << endl;
+  *oLog << "kRun" << endl;
       }
       else if (fStatusLast == 1) {
-	*oLog << "kStop" << endl;
+  *oLog << "kStop" << endl;
       }
       else if (fStatusLast == 2) {
-	*oLog << "kExit" << endl;
+  *oLog << "kExit" << endl;
       }
       else if (fStatusLast == 3) {
-	*oLog << "kFocus" << endl;
+  *oLog << "kFocus" << endl;
       }
       else if (fStatusLast == 4) {
-	*oLog << "kSuspend" << endl;
+  *oLog << "kSuspend" << endl;
       }
       else if (fStatusLast == 5) {
-	*oLog << "kAbsorb" << endl;
+  *oLog << "kAbsorb" << endl;
       }
       else if (fStatusLast == 1) {
-	*oLog << "kStop" << endl;
+  *oLog << "kStop" << endl;
       }
       else {
-	*oLog << " can't interpret fStatusLast" << endl;
+  *oLog << " can't interpret fStatusLast" << endl;
       }
       *oLog << endl;
       
@@ -1756,7 +1757,7 @@ void GSegSCTelescope::drawTelescope(const int &option) {
       
       if (bSingleMAPMTmodule == false) {
         TCanvas * cMAPMT = new TCanvas("cMAPMT","cMAPMT",300,300);
-	cMAPMT->cd();
+  cMAPMT->cd();
         gGeoManager->GetVolume("focVol")->GetNode(1)->GetVolume()->Draw("ogl");
         //gGeoManager->GetVolume("focVol")->GetNode(1)->InspectNode();      
       }

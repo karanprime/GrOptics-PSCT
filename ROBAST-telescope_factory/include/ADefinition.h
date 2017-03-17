@@ -2,7 +2,7 @@
 VERSION4.0
 30May2016
 */
-/*! GDefinition Functions: general definitions, enums and associated
+/*! ADefinition Functions: general definitions, enums and associated
   functions to return enum strings.      
 */
 

@@ -396,9 +396,9 @@ void GSegSCTelescope::addPrimaryMirror(const char*name,
   mir->SetReflectivity(graph); // graph owned by AMirror (and deleted)
   TGeoCombiTrans* combi = mirror->BuildMirrorCombiTrans(fPrimaryV, kTRUE);
 
-  //ABorderSurfaceCondition * condition
-  //  = new ABorderSurfaceCondition(fManager->GetTopVolume(), mir);
-  //condition->SetGaussianRoughness(mirror->GetRoughness()*TMath::DegToRad());
+  ABorderSurfaceCondition * condition
+    = new ABorderSurfaceCondition(fManager->GetTopVolume(), mir);
+  condition->SetGaussianRoughness(mirror->GetRoughness()*TMath::DegToRad());
   fManager->GetTopVolume()->AddNode(mir, 1, combi);
   
 };
@@ -532,8 +532,8 @@ void GSegSCTelescope::addSecondaryObscuration() {
     *oLog << "  -- GSegSCTelescope::AddSecondaryObscuration " << endl;
   }
 
-  //const Double_t kZs = fF/fQ;
-  const Double_t kZs = fF*fZs;
+  const Double_t kZs = fF/fQ;
+  //const Double_t kZs = fF*fZs;
   AGeoAsphericDisk* disk
     = new AGeoAsphericDisk("secondaryObsV", 
                            kZs + fS[0] + 1.*cm, 0, 
@@ -582,9 +582,9 @@ void GSegSCTelescope::addSecondaryMirror(const char*name, SegmentedMirror *mirro
 
   TGeoCombiTrans* combi = mirror->BuildMirrorCombiTrans(fSecondaryV, kFALSE);
 
-  //ABorderSurfaceCondition * condition
-  //  = new ABorderSurfaceCondition(fManager->GetTopVolume(), mir);
-  //condition->SetGaussianRoughness(mirror->GetRoughness()*TMath::DegToRad());
+  ABorderSurfaceCondition * condition
+    = new ABorderSurfaceCondition(fManager->GetTopVolume(), mir);
+  condition->SetGaussianRoughness(mirror->GetRoughness()*TMath::DegToRad());
 
   fManager->GetTopVolume()->AddNode(mir, 1, combi);
   

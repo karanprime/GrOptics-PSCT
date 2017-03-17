@@ -37,7 +37,7 @@ std::vector<float> *photonDcosY = 0;
 void CompareTrees() {
   
   float episilon = 0.00001; // for equality tests
-  std::string fileOrig = "photonLocationTestOff50.root";
+  std::string fileOrig = "photonLocationOrig.root";
   std::string fileTest = "../photonLocation.root";
   std::string treeName = "T1";
 

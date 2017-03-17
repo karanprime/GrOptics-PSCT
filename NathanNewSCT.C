@@ -1825,7 +1825,7 @@ void sct_test()
   //  sct->GetManager()->SetMultiThread(kTRUE);
   //  sct->GetManager()->SetMaxThreads(1);
 
-  //sct->TestPerformance(true);
+  sct->TestPerformance(true);
 
   sct->GetManager()->GetTopVolume()->Draw("ogl");
 }
